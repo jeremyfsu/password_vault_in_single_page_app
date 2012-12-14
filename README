@@ -1,3 +1,10 @@
+This is a fork of my Riak Backed Password Vault
+I'd like to extract out the backen specific stuff to make it easy to drop in any other RESTful backend with 
+ease.
+In the initial case, the backend will be Amazon S3.
+
+Old README starts here.
+
 Riak Backed Password Vault
 
 This is mostly a project to help me learn about Riak,

@@ -1,10 +1,8 @@
-function list_keys(){
-    client = new RiakClient();
-    var bucket = new RiakBucket(window.bucket, client);
-    bucket.keys(function(keys){
-        var data = {'keys': keys.sort()};
+function list_accounts(){
+    i = new Interface();
+
         var template = [['table',
-                            data.keys.map(function(text){
+            i.list().map(function(text){
                                 return ['tr',
                                     ['td',
                                         ['div', {'class':'account'},
@@ -20,7 +18,7 @@ function list_keys(){
         template.push(['a', {'href':'#/new', 'class':'default'}, 'New Account']);
         $('#content').html(microjungle(template));
         $('#errors').text('');
-    });
+
 }
 
 function fetch(key){
@@ -130,14 +128,13 @@ function error(msg){
 }
 
 $(function() {
-    window.bucket = 'passwords';
     var routes = {
         '/fetch': {
             '/(.*)': {
                 on: function(key){fetch(key);}
             }
         },
-        '/list_keys':list_keys,
+        '/list_accounts':list_accounts,
         '/new':new_item,
         '/error': {
             '/(.*)' : {

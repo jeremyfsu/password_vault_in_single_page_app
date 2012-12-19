@@ -3,18 +3,18 @@ function list_accounts(){
 
         var template = [['table',
             i.list().map(function(text){
-                                return ['tr',
-                                    ['td',
-                                        ['div', {'class':'account'},
-                                            ['a', {'href': '#/fetch/'+text}, unescape(text)]
-                                        ]
-                                    ],
-                                    ['td',
-                                        ['a', {'href': '/riak/'+window.bucket+'/'+text, 'class':'delete', 'id':text}, 'X']
-                                    ]
-                                ]
-                            })
-                        ]];
+                return ['tr',
+                        ['td',
+                            ['div', {'class':'account'},
+                                ['a', {'href': '#/fetch/'+text}, unescape(text)]
+                            ]
+                        ],
+                        ['td',
+                            ['a', {'href': '/riak/'+window.bucket+'/'+text, 'class':'delete', 'id':text}, 'X']
+                        ]
+                ]
+            })
+        ]];
         template.push(['a', {'href':'#/new', 'class':'default'}, 'New Account']);
         $('#content').html(microjungle(template));
         $('#errors').text('');
@@ -88,20 +88,17 @@ function new_item(){
 }
 
 function store(){
-    client = new RiakClient();
-    client.bucket(window.bucket, function(bucket){
-        bucket.get_or_new($('input#key').val(), function(status, object){
-            record = {
-                'username':$('input#username').val(),
-                'password':$('input#password').val(),
-                'notes':$('textarea#notes').val()
-            };
-            encrypted = GibberishAES.enc(JSON.stringify(record), $('input#secret').val());
-            object.body = encrypted;
-            object.contentType = 'text/plain';
-            object.store();
-        });
-    });
+    record = {
+        'username':$('input#username').val(),
+        'password':$('input#password').val(),
+        'notes':$('textarea#notes').val()
+    };
+    encrypted = GibberishAES.enc(JSON.stringify(record), $('input#secret').val());
+    object.body = encrypted;
+    object.contentType = 'text/plain';
+    object.store();
+    i = new Interface();
+    i.store($('input#key').val(), encrypted);
 
     window.location = '#/error/' + escape('Account info encrypted and stored');
 }
@@ -143,5 +140,5 @@ $(function() {
         }
     };
     var router = Router(routes).init();
-    window.location = '#/list_keys';
+    window.location = '#/list_accounts';
 });

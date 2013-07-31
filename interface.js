@@ -9,7 +9,7 @@ var Interface = (function () {
         };
 
         this.fetch = function (key) {
-            return key;
+            return "returning " + key;
             /*fetch the JSON*/
         };
 

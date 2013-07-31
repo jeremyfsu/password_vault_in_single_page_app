@@ -22,8 +22,10 @@ function list_accounts(){
 }
 
 function fetch(key){
-    client = new RiakClient();
-    client.bucket(window.bucket, function(bucket){
+    i = new Interface();
+    value = i.fetch(key);
+    $('#content').html(value);
+    /*client.bucket(window.bucket, function(bucket){
         bucket.get(key, function(s,o){
             try {
                 decrypted = GibberishAES.dec(o.body, $('input#secret').val());
@@ -61,7 +63,7 @@ function fetch(key){
                 window.location = '#/error/' + escape(e);
             }
         });
-    });
+    });*/
 }
 
 function new_item(){
